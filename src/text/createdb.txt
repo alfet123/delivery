@@ -1,1 +1,8 @@
-CREATE DATABASE `delivery` CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
+Создание базы данных
+
+
+CREATE USER 'delivery'@'localhost' IDENTIFIED WITH mysql_native_password BY 'delivery';
+
+CREATE DATABASE delivery CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+GRANT ALL ON delivery.* TO 'delivery'@'localhost';
