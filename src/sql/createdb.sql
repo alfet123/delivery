@@ -1,5 +1,3 @@
-CREATE DATABASE `delivery` CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
-
 USE `delivery`;
 
 CREATE TABLE `user` (
@@ -8,7 +6,7 @@ CREATE TABLE `user` (
 	`password` varchar(64) NOT NULL COMMENT 'Пароль',
 	`role` enum('manager','courier') NOT NULL COMMENT 'Роль пользователя',
 	`name` varchar(64) NOT NULL COMMENT 'Имя пользователя',
-	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
+	`phone` varchar(32) DEFAULT NULL COMMENT 'Телефон',
 	`email` varchar(64) DEFAULT NULL COMMENT 'E-mail',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Пользователи';
@@ -21,61 +19,54 @@ CREATE TABLE `type` (
 
 CREATE TABLE `product` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`code` varchar(32) NOT NULL COMMENT 'Артикул',
-	`name` varchar(64) NOT NULL COMMENT 'Название',
-	`description` text DEFAULT NULL COMMENT 'Описание',
-	`price` int(11) DEFAULT NULL COMMENT 'Стоимость',
+	`code` varchar(32) NOT NULL UNIQUE KEY COMMENT 'Артикул',
+	`name` varchar(64) NOT NULL COMMENT 'Название товара',
+	`description` text DEFAULT NULL COMMENT 'Описание товара',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Товары';
 
-CREATE TABLE `route` (
+CREATE TABLE `transport` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
+	`name` varchar(64) NOT NULL COMMENT 'Название',
+	`address` varchar(255) NOT NULL COMMENT 'Адрес',
+	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Маршрут';
-
-CREATE TABLE `company` (
-	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Организация';
-
-CREATE TABLE `` (
-	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='';
-
-CREATE TABLE `` (
-	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Транспортная компания';
 
 CREATE TABLE `task` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
 	`type_id` int(11) NOT NULL COMMENT 'Тип задания',
 	`date_planned` datetime NOT NULL COMMENT 'Дата плановая',
-	`time` varchar(64) DEFAULT NULL COMMENT 'Время',
+	/*`time` varchar(64) DEFAULT NULL COMMENT 'Время для уточнения',*/
 	/*`city_id` int(11) DEFAULT NULL COMMENT 'Город',*/
-	`person_id` int(11) NOT NULL COMMENT 'Частное лицо',
-	`company_id` int(11) NOT NULL COMMENT 'Организация',
-	`transport_id` int(11) NOT NULL COMMENT 'Транспортная компания',
+	/*`route_id` int(11) NOT NULL COMMENT 'Маршрут',*/
+	`address` varchar(255) NOT NULL COMMENT 'Адрес',
+	`name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
+	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
+	`company` varchar(64) DEFAULT NULL COMMENT 'Организация',
+	`transport_id` int(11) DEFAULT NULL COMMENT 'Транспортная компания',
 	/*`address` varchar(255) DEFAULT NULL COMMENT 'Адрес',*/
 	/*`lat` decimal(10,7) DEFAULT NULL COMMENT 'Широта',*/
 	/*`long` decimal(10,7) DEFAULT NULL COMMENT 'Долгота',*/
-	`price` int(11) DEFAULT NULL COMMENT 'Стоимость',
+	`cost` int(11) NOT NULL DEFAULT 0 COMMENT 'Стоимость',
 	`comment` text DEFAULT NULL COMMENT 'Примечание',
 	`courier_id` int(11) DEFAULT NULL COMMENT 'Исполнитель',
 	/* Возможно оставить только признак или только дату выполнения */
 	`is_finished` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак выполнения',
 	`date_finished` datetime DEFAULT NULL COMMENT 'Дата выполнения',
-	`status` enum('new','finished','canceled','failed') NOT NULL COMMENT 'Статус задания',
+	`status` enum('new','finished','canceled','failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
+	FOREIGN KEY (`transport_id`) REFERENCES `transport` (`id`),
 	FOREIGN KEY (`courier_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Задания';
 
 CREATE TABLE `task_product` (
 	`task_id` int(11) NOT NULL COMMENT 'Задание',
 	`product_id` int(11) NOT NULL COMMENT 'Товар',
-	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
+	`price` int(11) NOT NULL DEFAULT 0 COMMENT 'Цена',
+	`count` int(11) NOT NULL DEFAULT 1 COMMENT 'Количество',
+	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
 	FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Товары в задании';
