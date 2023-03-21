@@ -1,5 +1,5 @@
 html {
-	font-family: Verdana, Arial, sans-serif;
+	font-family: "Open Sans", Verdana, Arial, sans-serif;
 	font-size: 16px;
 }
 
@@ -67,6 +67,24 @@ a:hover {
 	flex: 1 0 auto;
 }
 
+.header_logo{
+	/*border: 1px solid white;*/
+	/*border-radius: 5px;*/
+}
+
+.logo_name {
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 18px;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.logo_task {
+	font-size: 10px;
+	letter-spacing: 8px;
+	text-transform: uppercase;
+}
+
 .menu_list {
 	display: flex;
 	justify-content: center;	
@@ -85,6 +103,66 @@ a:hover {
 	font-style: italic;
 }
 
+/*
 .content_message {
 	margin: auto;
+}
+*/
+
+.container_delivery {
+	display: block;
+}
+
+.delivery_title {
+	padding: 20px 0;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.delivery_cards {
+	display: flex;
+	align-items: flex-start;
+}
+
+.day_card {
+	margin: 5px;
+	flex: 1 1 0;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+.day_card:first-child {
+	margin-left: 0;
+}
+
+.day_card:last-child {
+	margin-right: 0;
+}
+
+.day_name {
+	padding: 5px;
+	font-size: 14px;
+	text-align: center;
+	color: white;
+	background-color: #1b5d7d;
+}
+
+.day_task {
+	padding: 5px;
+	font-size: 12px;
+	border-bottom: 1px dotted gray;
+}
+
+.day_task:last-child {
+	border-bottom: none;
+}
+
+.task_none {
+	font-style: italic;
+	text-align: center;
+}
+
+.delivery_summary {
+	padding: 20px 0;
+	font-size: 14px;
 }
