@@ -151,7 +151,7 @@ CREATE TABLE `type` (
   `name` varchar(64) NOT NULL COMMENT 'Название типа задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COMMENT='Тип задания';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Тип задания';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +160,6 @@ CREATE TABLE `type` (
 
 LOCK TABLES `type` WRITE;
 /*!40000 ALTER TABLE `type` DISABLE KEYS */;
-INSERT INTO `type` VALUES (1,'Прямая доставка','2023-03-09 07:57:14'),(2,'Доставка через ТК','2023-03-09 07:57:14'),(3,'Получение товара','2023-03-09 07:57:14'),(4,'Возврат от покупателя','2023-03-09 07:57:14');
 /*!40000 ALTER TABLE `type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,13 +174,13 @@ CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
   `login` varchar(32) NOT NULL COMMENT 'Логин',
   `password` varchar(64) NOT NULL COMMENT 'Пароль',
-  `role` enum('manager','courier') NOT NULL COMMENT 'Роль пользователя',
+  `role` enum('admin','manager','courier') CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Роль пользователя',
   `name` varchar(64) NOT NULL COMMENT 'Имя пользователя',
   `phone` varchar(32) DEFAULT NULL COMMENT 'Телефон',
   `email` varchar(64) DEFAULT NULL COMMENT 'E-mail',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Пользователи';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='Пользователи';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,6 +189,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'admin','$2y$10$YBLpTWvF/aoicGvdNi5Yb.Z0cCxHU4cIdI6UjbdIWmomK.3yJCMme','admin','Admin',NULL,NULL,'2023-04-26 08:28:54');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -202,4 +202,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-09 13:03:24
+-- Dump completed on 2023-04-27  9:16:23

@@ -4,7 +4,7 @@ CREATE TABLE `user` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
 	`login` varchar(32) NOT NULL COMMENT 'Логин',
 	`password` varchar(64) NOT NULL COMMENT 'Пароль',
-	`role` enum('manager','courier') NOT NULL COMMENT 'Роль пользователя',
+	`role` enum('admin', 'manager', 'courier') NOT NULL COMMENT 'Роль пользователя',
 	`name` varchar(64) NOT NULL COMMENT 'Имя пользователя',
 	`phone` varchar(32) DEFAULT NULL COMMENT 'Телефон',
 	`email` varchar(64) DEFAULT NULL COMMENT 'E-mail',
