@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine on
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteCond %{REQUEST_URI} !^\/css/(.*).css
+    RewriteCond %{REQUEST_URI} !^\/files/(.*).*
+    RewriteCond %{REQUEST_URI} !^\/img/(.*).jpg
+    RewriteCond %{REQUEST_URI} !^\/img/(.*).png
+    RewriteCond %{REQUEST_URI} !^\/js/(.*).js
+
+    RewriteRule .* index.php [L]
+
+</IfModule>

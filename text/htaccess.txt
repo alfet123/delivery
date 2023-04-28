@@ -1,0 +1,26 @@
+<Directory />
+    DirectoryIndex index.php
+    AllowOverride All
+    Options All -ExecCGI -Indexes -Includes +FollowSymLinks
+    Order allow,deny
+    Allow from all
+    Require all granted
+</Directory>
+
+<IfModule mod_rewrite.c>
+
+    RewriteEngine on
+    RewriteBase /
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteCond %{REQUEST_URI} !^\/css/(.*).css
+    RewriteCond %{REQUEST_URI} !^\/files/(.*).*
+    RewriteCond %{REQUEST_URI} !^\/img/(.*).jpg
+    RewriteCond %{REQUEST_URI} !^\/img/(.*).png
+    RewriteCond %{REQUEST_URI} !^\/js/(.*).js
+
+    RewriteRule ^(.*)$ index.php [L,QSA]
+
+</IfModule>

@@ -1,7 +1,9 @@
 <?php
 
 $menu = [
-    '/list' => 'Список'
+    '/' => 'Главная',
+    '/catalog' => 'Каталог',
+    '/about' => 'О компании'
 ];
 
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
