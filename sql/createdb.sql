@@ -40,7 +40,7 @@ CREATE TABLE `task` (
 	/*`time` varchar(64) DEFAULT NULL COMMENT 'Время для уточнения',*/
 	/*`city_id` int(11) DEFAULT NULL COMMENT 'Город',*/
 	/*`route_id` int(11) NOT NULL COMMENT 'Маршрут',*/
-	`address` varchar(255) NOT NULL COMMENT 'Адрес',
+	`address` varchar(128) NOT NULL COMMENT 'Адрес',
 	`name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
 	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
 	`company` varchar(64) DEFAULT NULL COMMENT 'Организация',

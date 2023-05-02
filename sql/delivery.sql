@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Апр 27 2023 г., 09:08
+-- Время создания: Май 02 2023 г., 15:42
 -- Версия сервера: 8.0.32-0ubuntu0.22.04.2
 -- Версия PHP: 8.1.2-1ubuntu2.11
 
@@ -35,6 +35,17 @@ CREATE TABLE `product` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Товары';
 
+--
+-- Дамп данных таблицы `product`
+--
+
+INSERT INTO `product` (`id`, `code`, `name`, `description`, `created_at`) VALUES
+(1, '1111', 'Кресло-качалка', 'Кресло-качалка', '2023-05-02 04:33:02'),
+(2, '2222', 'Глобус-бар', 'Глобус-бар', '2023-05-02 04:36:36'),
+(3, '3333', 'Подвесное кресло', 'Подвесное кресло', '2023-05-02 04:36:36'),
+(4, '4444', 'Набор для каллиграфии', 'Набор для каллиграфии', '2023-05-02 04:36:36'),
+(5, '5555', 'Кресло из ротанга', 'Кресло из ротанга', '2023-05-02 04:36:36');
+
 -- --------------------------------------------------------
 
 --
@@ -45,7 +56,7 @@ CREATE TABLE `task` (
   `id` int NOT NULL COMMENT 'Идентификатор',
   `type_id` int NOT NULL COMMENT 'Тип задания',
   `date_planned` datetime NOT NULL COMMENT 'Дата плановая',
-  `address` varchar(255) NOT NULL COMMENT 'Адрес',
+  `address` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
   `name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `company` varchar(64) DEFAULT NULL COMMENT 'Организация',
@@ -58,6 +69,14 @@ CREATE TABLE `task` (
   `status` enum('new','finished','canceled','failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
+
+--
+-- Дамп данных таблицы `task`
+--
+
+INSERT INTO `task` (`id`, `type_id`, `date_planned`, `address`, `name`, `phone`, `company`, `transport_id`, `cost`, `comment`, `courier_id`, `is_finished`, `date_finished`, `status`, `created_at`) VALUES
+(1, 1, '2023-05-02 15:30:12', '8 Марта, 197', 'Иванов Иван Иванович', '123-45-67', NULL, NULL, 12345, NULL, NULL, 0, '2023-05-02 15:30:12', 'new', '2023-05-02 10:34:41'),
+(2, 2, '2023-05-02 15:36:27', 'Город, улица, дом', 'Петров Петр Петрович', '345-67-89', NULL, 1, 1200, NULL, NULL, 0, '2023-05-02 15:36:27', 'new', '2023-05-02 10:39:20');
 
 -- --------------------------------------------------------
 
@@ -73,6 +92,14 @@ CREATE TABLE `task_product` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Товары в задании';
 
+--
+-- Дамп данных таблицы `task_product`
+--
+
+INSERT INTO `task_product` (`task_id`, `product_id`, `price`, `count`, `created_at`) VALUES
+(1, 1, 12345, 1, '2023-05-02 10:35:25'),
+(2, 4, 500, 2, '2023-05-02 10:39:46');
+
 -- --------------------------------------------------------
 
 --
@@ -81,11 +108,19 @@ CREATE TABLE `task_product` (
 
 CREATE TABLE `transport` (
   `id` int NOT NULL COMMENT 'Идентификатор',
-  `name` varchar(64) NOT NULL COMMENT 'Название',
-  `address` varchar(255) NOT NULL COMMENT 'Адрес',
+  `name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Название',
+  `address` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Транспортная компания';
+
+--
+-- Дамп данных таблицы `transport`
+--
+
+INSERT INTO `transport` (`id`, `name`, `address`, `phone`, `created_at`) VALUES
+(1, 'Кит', '8 Марта, 269', '', '2023-05-02 05:13:40'),
+(2, 'CDEK', 'Титова, 19', '', '2023-05-02 05:13:40');
 
 -- --------------------------------------------------------
 
@@ -95,9 +130,19 @@ CREATE TABLE `transport` (
 
 CREATE TABLE `type` (
   `id` int NOT NULL COMMENT 'Идентификатор',
-  `name` varchar(64) NOT NULL COMMENT 'Название типа задания',
+  `name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Название типа задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Тип задания';
+
+--
+-- Дамп данных таблицы `type`
+--
+
+INSERT INTO `type` (`id`, `name`, `created_at`) VALUES
+(1, 'Прямая доставка', '2023-05-02 04:29:23'),
+(2, 'Доставка через ТК', '2023-05-02 04:29:23'),
+(3, 'Получение товара', '2023-05-02 04:30:09'),
+(4, 'Возврат от покупателя', '2023-05-02 04:30:09');
 
 -- --------------------------------------------------------
 
@@ -176,25 +221,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор';
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор';
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `transport`
 --
 ALTER TABLE `transport`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор';
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `type`
 --
 ALTER TABLE `type`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор';
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `user`

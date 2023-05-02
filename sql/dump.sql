@@ -30,7 +30,7 @@ CREATE TABLE `product` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Товары';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COMMENT='Товары';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,'1111','Кресло-качалка','Кресло-качалка','2023-05-02 04:33:02'),(2,'2222','Глобус-бар','Глобус-бар','2023-05-02 04:36:36'),(3,'3333','Подвесное кресло','Подвесное кресло','2023-05-02 04:36:36'),(4,'4444','Набор для каллиграфии','Набор для каллиграфии','2023-05-02 04:36:36'),(5,'5555','Кресло из ротанга','Кресло из ротанга','2023-05-02 04:36:36');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +54,7 @@ CREATE TABLE `task` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
   `type_id` int NOT NULL COMMENT 'Тип задания',
   `date_planned` datetime NOT NULL COMMENT 'Дата плановая',
-  `address` varchar(255) NOT NULL COMMENT 'Адрес',
+  `address` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
   `name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `company` varchar(64) DEFAULT NULL COMMENT 'Организация',
@@ -72,7 +73,7 @@ CREATE TABLE `task` (
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`transport_id`) REFERENCES `transport` (`id`),
   CONSTRAINT `task_ibfk_3` FOREIGN KEY (`courier_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,6 +82,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
+INSERT INTO `task` VALUES (1,1,'2023-05-02 15:30:12','8 Марта, 197','Иванов Иван Иванович','123-45-67',NULL,NULL,12345,NULL,NULL,0,'2023-05-02 15:30:12','new','2023-05-02 10:34:41'),(2,2,'2023-05-02 15:36:27','Город, улица, дом','Петров Петр Петрович','345-67-89',NULL,1,1200,NULL,NULL,0,'2023-05-02 15:36:27','new','2023-05-02 10:39:20');
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,6 +112,7 @@ CREATE TABLE `task_product` (
 
 LOCK TABLES `task_product` WRITE;
 /*!40000 ALTER TABLE `task_product` DISABLE KEYS */;
+INSERT INTO `task_product` VALUES (1,1,12345,1,'2023-05-02 10:35:25'),(2,4,500,2,'2023-05-02 10:39:46');
 /*!40000 ALTER TABLE `task_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,12 +125,12 @@ DROP TABLE IF EXISTS `transport`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transport` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
-  `name` varchar(64) NOT NULL COMMENT 'Название',
-  `address` varchar(255) NOT NULL COMMENT 'Адрес',
+  `name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Название',
+  `address` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Транспортная компания';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COMMENT='Транспортная компания';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,6 +139,7 @@ CREATE TABLE `transport` (
 
 LOCK TABLES `transport` WRITE;
 /*!40000 ALTER TABLE `transport` DISABLE KEYS */;
+INSERT INTO `transport` VALUES (1,'Кит','8 Марта, 269','','2023-05-02 05:13:40'),(2,'CDEK','Титова, 19','','2023-05-02 05:13:40');
 /*!40000 ALTER TABLE `transport` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,10 +152,10 @@ DROP TABLE IF EXISTS `type`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `type` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
-  `name` varchar(64) NOT NULL COMMENT 'Название типа задания',
+  `name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Название типа задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Тип задания';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COMMENT='Тип задания';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +164,7 @@ CREATE TABLE `type` (
 
 LOCK TABLES `type` WRITE;
 /*!40000 ALTER TABLE `type` DISABLE KEYS */;
+INSERT INTO `type` VALUES (1,'Прямая доставка','2023-05-02 04:29:23'),(2,'Доставка через ТК','2023-05-02 04:29:23'),(3,'Получение товара','2023-05-02 04:30:09'),(4,'Возврат от покупателя','2023-05-02 04:30:09');
 /*!40000 ALTER TABLE `type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-27  9:16:23
+-- Dump completed on 2023-05-02 15:44:55
