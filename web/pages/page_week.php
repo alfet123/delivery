@@ -1,11 +1,5 @@
 <?php
 
-$menu = [
-	'/' => 'Главная',
-	'/catalog' => 'Каталог',
-	'/about' => 'О компании'
-];
-
 $title = 'Планирование доставки';
 
 //$persons = DataBase::instance()->getAllPersons();

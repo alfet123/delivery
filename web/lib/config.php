@@ -11,3 +11,9 @@ $pages = [
     'test' => 'page_test',
     'week' => 'page_week'
 ];
+
+$menu = [
+    '/' => 'Главная',
+    '/week' => 'Неделя',
+    '/test' => 'Тестовая'
+];

@@ -1,11 +1,5 @@
 <?php
 
-$menu = [
-    '/' => 'Главная',
-    '/catalog' => 'Каталог',
-    '/about' => 'О компании'
-];
-
 $title = 'Ошибка';
 
 includeTemplate('html_begin', ['title' => $title, 'menu' => $menu]);

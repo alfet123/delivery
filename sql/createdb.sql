@@ -13,7 +13,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `type` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`name` varchar(64) NOT NULL COMMENT 'Название типа задания',
+	`name` varchar(32) NOT NULL COMMENT 'Название типа задания',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Тип задания';
 
@@ -27,8 +27,8 @@ CREATE TABLE `product` (
 
 CREATE TABLE `transport` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
-	`name` varchar(64) NOT NULL COMMENT 'Название',
-	`address` varchar(255) NOT NULL COMMENT 'Адрес',
+	`name` varchar(32) NOT NULL COMMENT 'Название',
+	`address` varchar(64) NOT NULL COMMENT 'Адрес',
 	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Транспортная компания';
