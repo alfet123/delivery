@@ -36,12 +36,12 @@ CREATE TABLE `transport` (
 CREATE TABLE `task` (
 	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
 	`type_id` int(11) NOT NULL COMMENT 'Тип задания',
-	`date_planned` datetime NOT NULL COMMENT 'Дата плановая',
+	`date_planned` date NOT NULL COMMENT 'Дата плановая',
 	/*`time` varchar(64) DEFAULT NULL COMMENT 'Время для уточнения',*/
 	/*`city_id` int(11) DEFAULT NULL COMMENT 'Город',*/
 	/*`route_id` int(11) NOT NULL COMMENT 'Маршрут',*/
 	`address` varchar(128) NOT NULL COMMENT 'Адрес',
-	`name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
+	`person` varchar(64) NOT NULL COMMENT 'Контактное лицо',
 	`phone` varchar(32) NOT NULL COMMENT 'Телефон',
 	`company` varchar(64) DEFAULT NULL COMMENT 'Организация',
 	`transport_id` int(11) DEFAULT NULL COMMENT 'Транспортная компания',
@@ -53,8 +53,8 @@ CREATE TABLE `task` (
 	`courier_id` int(11) DEFAULT NULL COMMENT 'Исполнитель',
 	/* Возможно оставить только признак или только дату выполнения */
 	`is_finished` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак выполнения',
-	`date_finished` datetime DEFAULT NULL COMMENT 'Дата выполнения',
-	`status` enum('new','finished','canceled','failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
+	`date_finished` date DEFAULT NULL COMMENT 'Дата выполнения',
+	`status` enum('new', 'finished', 'canceled', 'failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
 	`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
 	FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
 	FOREIGN KEY (`transport_id`) REFERENCES `transport` (`id`),

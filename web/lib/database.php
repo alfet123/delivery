@@ -60,25 +60,112 @@ class DataBase {
         return $user;
     }
 
-    // Возвращает список заданий для указанной даты
-    public function getTasksByDate()
+    // Возвращает даты начала и конца текущей недели
+    public function getWeekPeriod()
     {
-        $persons['male'] = [];
-        $persons['female'] = [];
+        $period = [
+            'first' => '',
+            'last' => ''
+        ];
 
-        $query  = "select person.id, person.family, person.name, person.patronymic, person.year, gender.name as gender ";
-        $query .= "from person ";
-        $query .= "join gender on person.gender = gender.id ";
-        $query .= "order by person.id";
+        $time = time();
+        $date = date("Y-m-d", $time);
+        $current_week_day = date_format(date_create($date), "w");
+        $days_to_week_end = 7 - $current_week_day;
+        $days_to_week_start = 6 - $days_to_week_end;
+        $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
+        $last_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) + $days_to_week_end, date("Y", $time));
+
+        $period['first'] = date("Y-m-d", $first_week_day);
+        $period['last'] = date("Y-m-d", $last_week_day);
+
+        return $period;
+    }
+
+    // Возвращает все даты текущей недели
+    public function getWeekDates()
+    {
+        $dates = [
+            '0' => ['day' => 'Понедельник', 'date' => ''],
+            '1' => ['day' => 'Вторник', 'date' => ''],
+            '2' => ['day' => 'Среда', 'date' => ''],
+            '3' => ['day' => 'Четверг', 'date' => ''],
+            '4' => ['day' => 'Пятница', 'date' => ''],
+            '5' => ['day' => 'Суббота', 'date' => ''],
+            '6' => ['day' => 'Воскресенье', 'date' => '']
+        ];
+
+        $time = time();
+        $date = date("Y-m-d", $time);
+        $current_week_day = date_format(date_create($date), "w");
+        $days_to_week_end = 7 - $current_week_day;
+        $days_to_week_start = 6 - $days_to_week_end;
+        $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
+
+        foreach ($dates as $dayNumber => $value) {
+            $dates[$dayNumber]['date'] = date("Y-m-d", strtotime("+$dayNumber days", $first_week_day));
+        }
+
+        return $dates;
+    }
+
+    // Возвращает список заданий для указанной даты
+    public function getTasksByDate($date)
+    {
+        $tasks = [];
+
+        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone ";
+        $query .= "from task ";
+        $query .= "join type on task.type_id = type.id ";
+        $query .= "where task.date_planned = '".$date."' ";
+        $query .= "order by task.id";
 
         if ($result = mysqli_query($this->link, $query)) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $persons[$row['gender']][$row['id']] = $row;
+                $tasks[$row['id']] = $row;
             }
             mysqli_free_result($result);
         }
 
-        return $persons;
+        return $tasks;
+    }
+
+    // Возвращает список заданий для указанного списка дат
+    // с помощью отдельных запросов для каждой даты
+    public function getTasksByDates($dates)
+    {
+        $tasks = [];
+
+        foreach ($dates as $dayNumber => $value) {
+
+            $tasks[$dayNumber] = $value;
+            $tasks[$dayNumber]['tasks'] = getTasksByDate($value['date']);
+
+        }
+
+        return $tasks;
+    }
+
+    // Возвращает список заданий для указанного периода
+    // с помощью одного общего запроса
+    public function getTasksByPeriod($period)
+    {
+        $tasks = [];
+
+        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone ";
+        $query .= "from task ";
+        $query .= "join type on task.type_id = type.id ";
+        $query .= "where task.date_planned >= '".$period['first']."' and task.date_planned <= '".$period['last']."' ";
+        $query .= "order by task.date_planned, task.id";
+
+        if ($result = mysqli_query($this->link, $query)) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $tasks[$row['date']][$row['id']] = $row;
+            }
+            mysqli_free_result($result);
+        }
+
+        return $tasks;
     }
 
     // Возвращает список всех заданий

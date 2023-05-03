@@ -3,71 +3,39 @@
 ?>
 
 <main class="main_content">
-	<div class="container  container_delivery">
+    <div class="container  container_delivery">
 
-		<h1 class="delivery_title">Планирование доставки за период с 20.03.2023 по 26.03.2023</h1>
+        <h1 class="delivery_title">Планирование доставки за период с <?=$period['first'];?> по <?=$period['last'];?></h1>
 
-		<!--<p class="content_message">Программа находится в разработке</p>-->
+        <div class="delivery_cards">
 
-		<div class="delivery_cards">
+        <?php foreach ($tasks as $dayNumber => $value) : ?>
 
-			<div class="day_card">
-				<p class="day_name">Понедельник</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+            <div class="day_card">
 
-			<div class="day_card">
-				<p class="day_name">Вторник</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+                <p class="day_name"><?=$value['day'];?></p>
 
-			<div class="day_card">
-				<p class="day_name">Среда</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+                <?php if (empty($value['tasks'])) : ?>
 
-			<div class="day_card">
-				<p class="day_name">Четверг</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+                    <p class="day_task  task_none">Доставок нет</p>
 
-			<div class="day_card">
-				<p class="day_name">Пятница</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+                <?php else : ?>
 
-			<div class="day_card">
-				<p class="day_name">Суббота</p>
-				<p class="day_task">Доставка товара по адресу</p>
-				<p class="day_task">Доставка товара по адресу</p>
-			</div>
+                    <?php foreach ($value['tasks'] as $key => $task) : ?>
 
-			<div class="day_card">
-				<p class="day_name">Воскресенье</p>
-				<p class="day_task  task_none">Доставок нет</p>
-			</div>
+                        <p class="day_task"><?=$value['tasks']['type'];?> по адресу <?=$value['tasks']['address'];?></p>
 
-		</div>
+                    <?php endforeach; ?>
 
-		<p class="delivery_summary">Итог по доставкам за неделю: запланировано 25, выполнено 18, просрочено 2, ожидают 5 </p>
+                <?php endif; ?>
 
-	</div>
+            </div>
+
+        <?php endforeach; ?>
+
+        </div>
+
+        <p class="delivery_summary">Итог по доставкам за неделю: запланировано 25, выполнено 18, просрочено 2, ожидают 5 </p>
+
+    </div>
 </main>

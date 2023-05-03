@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set("Asia/Yekaterinburg");
+
 $pagesPath = 'pages';
 $widgetsPath = 'widgets';
 $templatesPath = 'templates';
