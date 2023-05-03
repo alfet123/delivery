@@ -5,7 +5,7 @@
 <main class="main_content">
     <div class="container  container_delivery">
 
-        <h1 class="delivery_title">Планирование доставки за период с <?=$period['first'];?> по <?=$period['last'];?></h1>
+        <h1 class="delivery_title">Планирование доставки за период с <?=$period['begin'];?> по <?=$period['end'];?></h1>
 
         <div class="delivery_cards">
 
@@ -23,7 +23,7 @@
 
                     <?php foreach ($value['tasks'] as $key => $task) : ?>
 
-                        <p class="day_task"><?=$value['tasks']['type'];?> по адресу <?=$value['tasks']['address'];?></p>
+                        <p class="day_task"><?=$task['type'];?> по адресу <?=$task['address'];?></p>
 
                     <?php endforeach; ?>
 

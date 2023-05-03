@@ -10,7 +10,7 @@ class DataBase {
     {
         global $DBCONFIG;
 
-        $this->link = mysqli_connect('localhost:3307', 'delivery', 'delivery', 'delivery');
+        $this->link = mysqli_connect('localhost', 'delivery', 'delivery', 'delivery');
 
         if ($this->link) {
             mysqli_query($this->link, "SET NAMES 'utf8'");
@@ -60,55 +60,6 @@ class DataBase {
         return $user;
     }
 
-    // Возвращает даты начала и конца текущей недели
-    public function getWeekPeriod()
-    {
-        $period = [
-            'first' => '',
-            'last' => ''
-        ];
-
-        $time = time();
-        $date = date("Y-m-d", $time);
-        $current_week_day = date_format(date_create($date), "w");
-        $days_to_week_end = 7 - $current_week_day;
-        $days_to_week_start = 6 - $days_to_week_end;
-        $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
-        $last_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) + $days_to_week_end, date("Y", $time));
-
-        $period['first'] = date("Y-m-d", $first_week_day);
-        $period['last'] = date("Y-m-d", $last_week_day);
-
-        return $period;
-    }
-
-    // Возвращает все даты текущей недели
-    public function getWeekDates()
-    {
-        $dates = [
-            '0' => ['day' => 'Понедельник', 'date' => ''],
-            '1' => ['day' => 'Вторник', 'date' => ''],
-            '2' => ['day' => 'Среда', 'date' => ''],
-            '3' => ['day' => 'Четверг', 'date' => ''],
-            '4' => ['day' => 'Пятница', 'date' => ''],
-            '5' => ['day' => 'Суббота', 'date' => ''],
-            '6' => ['day' => 'Воскресенье', 'date' => '']
-        ];
-
-        $time = time();
-        $date = date("Y-m-d", $time);
-        $current_week_day = date_format(date_create($date), "w");
-        $days_to_week_end = 7 - $current_week_day;
-        $days_to_week_start = 6 - $days_to_week_end;
-        $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
-
-        foreach ($dates as $dayNumber => $value) {
-            $dates[$dayNumber]['date'] = date("Y-m-d", strtotime("+$dayNumber days", $first_week_day));
-        }
-
-        return $dates;
-    }
-
     // Возвращает список заданий для указанной даты
     public function getTasksByDate($date)
     {
@@ -138,8 +89,11 @@ class DataBase {
 
         foreach ($dates as $dayNumber => $value) {
 
-            $tasks[$dayNumber] = $value;
-            $tasks[$dayNumber]['tasks'] = getTasksByDate($value['date']);
+            $tasks[$dayNumber] = [
+                'day' => $value['day'],
+                'date' => $value['date'],
+                'tasks' => $this->getTasksByDate($value['date'])
+            ];
 
         }
 
