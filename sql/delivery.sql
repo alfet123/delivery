@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Май 02 2023 г., 15:42
+-- Время создания: Май 04 2023 г., 16:13
 -- Версия сервера: 8.0.32-0ubuntu0.22.04.2
 -- Версия PHP: 8.1.2-1ubuntu2.11
 
@@ -55,9 +55,9 @@ INSERT INTO `product` (`id`, `code`, `name`, `description`, `created_at`) VALUES
 CREATE TABLE `task` (
   `id` int NOT NULL COMMENT 'Идентификатор',
   `type_id` int NOT NULL COMMENT 'Тип задания',
-  `date_planned` datetime NOT NULL COMMENT 'Дата плановая',
+  `date_planned` date NOT NULL COMMENT 'Дата плановая',
   `address` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
-  `name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
+  `person` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Контактное лицо',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `company` varchar(64) DEFAULT NULL COMMENT 'Организация',
   `transport_id` int DEFAULT NULL COMMENT 'Транспортная компания',
@@ -65,7 +65,7 @@ CREATE TABLE `task` (
   `comment` text COMMENT 'Примечание',
   `courier_id` int DEFAULT NULL COMMENT 'Исполнитель',
   `is_finished` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак выполнения',
-  `date_finished` datetime DEFAULT NULL COMMENT 'Дата выполнения',
+  `date_finished` date DEFAULT NULL COMMENT 'Дата выполнения',
   `status` enum('new','finished','canceled','failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
@@ -74,9 +74,34 @@ CREATE TABLE `task` (
 -- Дамп данных таблицы `task`
 --
 
-INSERT INTO `task` (`id`, `type_id`, `date_planned`, `address`, `name`, `phone`, `company`, `transport_id`, `cost`, `comment`, `courier_id`, `is_finished`, `date_finished`, `status`, `created_at`) VALUES
-(1, 1, '2023-05-02 15:30:12', '8 Марта, 197', 'Иванов Иван Иванович', '123-45-67', NULL, NULL, 12345, NULL, NULL, 0, '2023-05-02 15:30:12', 'new', '2023-05-02 10:34:41'),
-(2, 2, '2023-05-02 15:36:27', 'Город, улица, дом', 'Петров Петр Петрович', '345-67-89', NULL, 1, 1200, NULL, NULL, 0, '2023-05-02 15:36:27', 'new', '2023-05-02 10:39:20');
+INSERT INTO `task` (`id`, `type_id`, `date_planned`, `address`, `person`, `phone`, `company`, `transport_id`, `cost`, `comment`, `courier_id`, `is_finished`, `date_finished`, `status`, `created_at`) VALUES
+(1, 1, '2023-05-01', '8 Марта, 197', 'Иванов Иван Иванович', '123-45-67', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-02 10:34:41'),
+(2, 2, '2023-05-01', 'Город, улица, дом', 'Петров Петр Петрович', '345-67-89', NULL, 1, 0, NULL, NULL, 0, NULL, 'new', '2023-05-02 10:39:20'),
+(3, 1, '2023-05-02', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:25:27'),
+(4, 1, '2023-05-02', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(5, 1, '2023-05-02', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(6, 1, '2023-05-03', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(7, 1, '2023-05-04', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(8, 1, '2023-05-04', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(9, 1, '2023-05-04', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(10, 1, '2023-05-04', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(11, 1, '2023-05-05', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(12, 1, '2023-05-05', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(13, 1, '2023-05-06', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(14, 1, '2023-05-06', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(15, 1, '2023-05-06', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(16, 1, '2023-04-26', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(17, 1, '2023-04-27', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(18, 1, '2023-04-27', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(19, 1, '2023-04-27', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(20, 1, '2023-04-28', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(21, 1, '2023-04-28', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(22, 1, '2023-05-08', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(23, 1, '2023-05-08', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(24, 1, '2023-05-08', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(25, 1, '2023-05-10', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(26, 1, '2023-05-10', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55'),
+(27, 1, '2023-05-11', 'Улица, Дом', 'Неизвестный покупатель', '000-00-00', NULL, NULL, 0, NULL, NULL, 0, NULL, 'new', '2023-05-04 05:28:55');
 
 -- --------------------------------------------------------
 
@@ -85,6 +110,7 @@ INSERT INTO `task` (`id`, `type_id`, `date_planned`, `address`, `name`, `phone`,
 --
 
 CREATE TABLE `task_product` (
+  `id` int NOT NULL COMMENT 'Идентификатор',
   `task_id` int NOT NULL COMMENT 'Задание',
   `product_id` int NOT NULL COMMENT 'Товар',
   `price` int NOT NULL DEFAULT '0' COMMENT 'Цена',
@@ -96,9 +122,34 @@ CREATE TABLE `task_product` (
 -- Дамп данных таблицы `task_product`
 --
 
-INSERT INTO `task_product` (`task_id`, `product_id`, `price`, `count`, `created_at`) VALUES
-(1, 1, 12345, 1, '2023-05-02 10:35:25'),
-(2, 4, 500, 2, '2023-05-02 10:39:46');
+INSERT INTO `task_product` (`id`, `task_id`, `product_id`, `price`, `count`, `created_at`) VALUES
+(1, 1, 1, 0, 1, '2023-05-04 10:37:30'),
+(2, 2, 2, 0, 1, '2023-05-04 10:41:55'),
+(3, 3, 3, 0, 1, '2023-05-04 10:41:55'),
+(4, 4, 4, 0, 1, '2023-05-04 10:41:55'),
+(5, 5, 5, 0, 1, '2023-05-04 10:41:55'),
+(6, 6, 1, 0, 1, '2023-05-04 10:41:55'),
+(7, 7, 2, 0, 1, '2023-05-04 10:41:55'),
+(8, 8, 3, 0, 1, '2023-05-04 10:41:55'),
+(9, 9, 4, 0, 1, '2023-05-04 10:41:55'),
+(10, 10, 5, 0, 1, '2023-05-04 10:41:55'),
+(11, 11, 1, 0, 1, '2023-05-04 10:41:55'),
+(12, 12, 2, 0, 1, '2023-05-04 10:41:55'),
+(13, 13, 3, 0, 1, '2023-05-04 10:41:55'),
+(14, 14, 4, 0, 1, '2023-05-04 10:41:55'),
+(15, 15, 5, 0, 1, '2023-05-04 10:41:55'),
+(16, 16, 1, 0, 1, '2023-05-04 10:41:55'),
+(17, 17, 2, 0, 1, '2023-05-04 10:41:55'),
+(18, 18, 3, 0, 1, '2023-05-04 10:41:55'),
+(19, 19, 4, 0, 1, '2023-05-04 10:41:55'),
+(20, 20, 5, 0, 1, '2023-05-04 10:41:55'),
+(21, 21, 1, 0, 1, '2023-05-04 10:41:55'),
+(22, 22, 2, 0, 1, '2023-05-04 10:41:55'),
+(23, 23, 3, 0, 1, '2023-05-04 10:41:55'),
+(24, 24, 4, 0, 1, '2023-05-04 10:41:55'),
+(25, 25, 5, 0, 1, '2023-05-04 10:41:55'),
+(26, 26, 1, 0, 1, '2023-05-04 10:41:55'),
+(27, 27, 2, 0, 1, '2023-05-04 10:41:55');
 
 -- --------------------------------------------------------
 
@@ -192,6 +243,7 @@ ALTER TABLE `task`
 -- Индексы таблицы `task_product`
 --
 ALTER TABLE `task_product`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `task_id` (`task_id`),
   ADD KEY `product_id` (`product_id`);
 
@@ -227,7 +279,13 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT для таблицы `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT для таблицы `task_product`
+--
+ALTER TABLE `task_product`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор', AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT для таблицы `transport`

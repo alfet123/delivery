@@ -31,7 +31,14 @@
 
                     <?php foreach ($value['tasks'] as $key => $task) : ?>
 
-                        <p class="day_task"><?=$task['type'];?> по адресу <?=$task['address'];?></p>
+                        <p class="day_task">
+                            <?=$task['type'];?> по адресу <?=$task['address'];?>
+                            (
+                            <?php foreach ($task['product'] as $key => $product) : ?>
+                                <?=$product['code'];?>,
+                            <?php endforeach; ?>
+                            )
+                        </p>
 
                     <?php endforeach; ?>
 

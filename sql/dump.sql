@@ -53,9 +53,9 @@ DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
   `type_id` int NOT NULL COMMENT 'Тип задания',
-  `date_planned` datetime NOT NULL COMMENT 'Дата плановая',
+  `date_planned` date NOT NULL COMMENT 'Дата плановая',
   `address` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Адрес',
-  `name` varchar(64) NOT NULL COMMENT 'Контактное лицо',
+  `person` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'Контактное лицо',
   `phone` varchar(32) NOT NULL COMMENT 'Телефон',
   `company` varchar(64) DEFAULT NULL COMMENT 'Организация',
   `transport_id` int DEFAULT NULL COMMENT 'Транспортная компания',
@@ -63,7 +63,7 @@ CREATE TABLE `task` (
   `comment` text COMMENT 'Примечание',
   `courier_id` int DEFAULT NULL COMMENT 'Исполнитель',
   `is_finished` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Признак выполнения',
-  `date_finished` datetime DEFAULT NULL COMMENT 'Дата выполнения',
+  `date_finished` date DEFAULT NULL COMMENT 'Дата выполнения',
   `status` enum('new','finished','canceled','failed') NOT NULL DEFAULT 'new' COMMENT 'Статус задания',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
   PRIMARY KEY (`id`),
@@ -73,7 +73,7 @@ CREATE TABLE `task` (
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`transport_id`) REFERENCES `transport` (`id`),
   CONSTRAINT `task_ibfk_3` FOREIGN KEY (`courier_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb3 COMMENT='Задания';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,1,'2023-05-02 15:30:12','8 Марта, 197','Иванов Иван Иванович','123-45-67',NULL,NULL,12345,NULL,NULL,0,'2023-05-02 15:30:12','new','2023-05-02 10:34:41'),(2,2,'2023-05-02 15:36:27','Город, улица, дом','Петров Петр Петрович','345-67-89',NULL,1,1200,NULL,NULL,0,'2023-05-02 15:36:27','new','2023-05-02 10:39:20');
+INSERT INTO `task` VALUES (1,1,'2023-05-01','8 Марта, 197','Иванов Иван Иванович','123-45-67',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-02 10:34:41'),(2,2,'2023-05-01','Город, улица, дом','Петров Петр Петрович','345-67-89',NULL,1,0,NULL,NULL,0,NULL,'new','2023-05-02 10:39:20'),(3,1,'2023-05-02','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:25:27'),(4,1,'2023-05-02','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(5,1,'2023-05-02','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(6,1,'2023-05-03','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(7,1,'2023-05-04','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(8,1,'2023-05-04','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(9,1,'2023-05-04','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(10,1,'2023-05-04','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(11,1,'2023-05-05','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(12,1,'2023-05-05','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(13,1,'2023-05-06','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(14,1,'2023-05-06','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(15,1,'2023-05-06','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(16,1,'2023-04-26','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(17,1,'2023-04-27','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(18,1,'2023-04-27','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(19,1,'2023-04-27','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(20,1,'2023-04-28','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(21,1,'2023-04-28','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(22,1,'2023-05-08','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(23,1,'2023-05-08','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(24,1,'2023-05-08','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(25,1,'2023-05-10','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(26,1,'2023-05-10','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55'),(27,1,'2023-05-11','Улица, Дом','Неизвестный покупатель','000-00-00',NULL,NULL,0,NULL,NULL,0,NULL,'new','2023-05-04 05:28:55');
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,16 +94,18 @@ DROP TABLE IF EXISTS `task_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `task_product` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор',
   `task_id` int NOT NULL COMMENT 'Задание',
   `product_id` int NOT NULL COMMENT 'Товар',
   `price` int NOT NULL DEFAULT '0' COMMENT 'Цена',
   `count` int NOT NULL DEFAULT '1' COMMENT 'Количество',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Время создания записи',
+  PRIMARY KEY (`id`),
   KEY `task_id` (`task_id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `task_product_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
   CONSTRAINT `task_product_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Товары в задании';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb3 COMMENT='Товары в задании';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +114,7 @@ CREATE TABLE `task_product` (
 
 LOCK TABLES `task_product` WRITE;
 /*!40000 ALTER TABLE `task_product` DISABLE KEYS */;
-INSERT INTO `task_product` VALUES (1,1,12345,1,'2023-05-02 10:35:25'),(2,4,500,2,'2023-05-02 10:39:46');
+INSERT INTO `task_product` VALUES (1,1,1,0,1,'2023-05-04 10:37:30'),(2,2,2,0,1,'2023-05-04 10:41:55'),(3,3,3,0,1,'2023-05-04 10:41:55'),(4,4,4,0,1,'2023-05-04 10:41:55'),(5,5,5,0,1,'2023-05-04 10:41:55'),(6,6,1,0,1,'2023-05-04 10:41:55'),(7,7,2,0,1,'2023-05-04 10:41:55'),(8,8,3,0,1,'2023-05-04 10:41:55'),(9,9,4,0,1,'2023-05-04 10:41:55'),(10,10,5,0,1,'2023-05-04 10:41:55'),(11,11,1,0,1,'2023-05-04 10:41:55'),(12,12,2,0,1,'2023-05-04 10:41:55'),(13,13,3,0,1,'2023-05-04 10:41:55'),(14,14,4,0,1,'2023-05-04 10:41:55'),(15,15,5,0,1,'2023-05-04 10:41:55'),(16,16,1,0,1,'2023-05-04 10:41:55'),(17,17,2,0,1,'2023-05-04 10:41:55'),(18,18,3,0,1,'2023-05-04 10:41:55'),(19,19,4,0,1,'2023-05-04 10:41:55'),(20,20,5,0,1,'2023-05-04 10:41:55'),(21,21,1,0,1,'2023-05-04 10:41:55'),(22,22,2,0,1,'2023-05-04 10:41:55'),(23,23,3,0,1,'2023-05-04 10:41:55'),(24,24,4,0,1,'2023-05-04 10:41:55'),(25,25,5,0,1,'2023-05-04 10:41:55'),(26,26,1,0,1,'2023-05-04 10:41:55'),(27,27,2,0,1,'2023-05-04 10:41:55');
 /*!40000 ALTER TABLE `task_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,4 +209,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-02 15:44:55
+-- Dump completed on 2023-05-04 16:15:59

@@ -60,6 +60,27 @@ class DataBase {
         return $user;
     }
 
+    // Возвраает список товаров для указанного задания
+    public function getTaskProducts($id)
+    {
+        $products = [];
+
+        $query  = "select task_product.id as id, product.id as pid, product.code, product.name, product.description ";
+        $query .= "from task_product ";
+        $query .= "join product on task_product.product_id = product.id ";
+        $query .= "where task_product.task_id = '".$id."' ";
+        $query .= "order by task_product.id";
+
+        if ($result = mysqli_query($this->link, $query)) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $products[$row['id']] = $row;
+            }
+            mysqli_free_result($result);
+        }
+
+        return $products;
+    }
+
     // Возвращает список заданий для указанной даты
     public function getTasksByDate($date)
     {
@@ -74,6 +95,7 @@ class DataBase {
         if ($result = mysqli_query($this->link, $query)) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $tasks[$row['id']] = $row;
+                $tasks[$row['id']]['product'] = $this->getTaskProducts($row['id']);
             }
             mysqli_free_result($result);
         }

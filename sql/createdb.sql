@@ -62,6 +62,7 @@ CREATE TABLE `task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Задания';
 
 CREATE TABLE `task_product` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Идентификатор',
 	`task_id` int(11) NOT NULL COMMENT 'Задание',
 	`product_id` int(11) NOT NULL COMMENT 'Товар',
 	`price` int(11) NOT NULL DEFAULT 0 COMMENT 'Цена',
