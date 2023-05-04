@@ -1,5 +1,13 @@
 <?php
 
+    $failedString = "";
+
+    if ($summary['failed'] > 0) {
+
+        $failedString = " (в том числе просрочены ".$summary['failed'].")";
+
+    }
+
 ?>
 
 <main class="main_content">
@@ -35,7 +43,8 @@
 
         </div>
 
-        <p class="delivery_summary">Итог по доставкам за неделю: запланировано 25, выполнено 18, просрочено 2, ожидают 5 </p>
+        <p class="delivery_summary">Всего доставок за неделю: <?=$summary['all'];?></p>
+        <p class="delivery_summary">Из них выполнено <?=$summary['finished'];?>, ожидают <?=$summary['waiting'];?><?=$failedString;?></p>
 
     </div>
 </main>

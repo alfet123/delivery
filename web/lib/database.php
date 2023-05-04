@@ -65,7 +65,7 @@ class DataBase {
     {
         $tasks = [];
 
-        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone ";
+        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone, task.is_finished ";
         $query .= "from task ";
         $query .= "join type on task.type_id = type.id ";
         $query .= "where task.date_planned = '".$date."' ";
@@ -101,20 +101,17 @@ class DataBase {
     }
 
     // Возвращает список заданий для указанного периода
-    // с помощью одного общего запроса
     public function getTasksByPeriod($period)
     {
         $tasks = [];
 
-        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone ";
+        $query  = "select task.id, task.date_planned, task.is_finished ";
         $query .= "from task ";
-        $query .= "join type on task.type_id = type.id ";
-        $query .= "where task.date_planned >= '".$period['first']."' and task.date_planned <= '".$period['last']."' ";
-        $query .= "order by task.date_planned, task.id";
+        $query .= "where task.date_planned >= '".$period['begin']."' and task.date_planned <= '".$period['end']."'";
 
         if ($result = mysqli_query($this->link, $query)) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $tasks[$row['date']][$row['id']] = $row;
+                $tasks[$row['id']] = $row;
             }
             mysqli_free_result($result);
         }
@@ -122,25 +119,32 @@ class DataBase {
         return $tasks;
     }
 
-    // Возвращает список всех заданий
-    public function getAllTasks()
+    // Возвращает итоговые данные по заданиям за период
+    public function getSummary($period)
     {
-        $persons = [];
+        $summary = [
+            'all' => 0,
+            'finished' => 0,
+            'waiting' => 0,
+            'failed' => 0
+        ];
 
-        $query  = "select person.id, person.family, person.name, person.patronymic, person.year, person.place, person.profession, gender.name as gender ";
-        $query .= "from person ";
-        $query .= "join gender on person.gender = gender.id ";
-        // $query .= "order by person.id";
-        $query .= "order by person.family, person.name, person.patronymic";
+        $tasks = $this->getTasksByPeriod($period);
 
-        if ($result = mysqli_query($this->link, $query)) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $persons[$row['id']] = $row;
+        $summary['all'] = count($tasks);
+
+        foreach ($tasks as $task) {
+            if ($task['is_finished'] == 1) {
+                $summary['finished']++;
+            } else {
+                $summary['waiting']++;
+                if (taskIsFailed($task['date_planned'], $task['is_finished'])) {
+                    $summary['failed']++;
+                }
             }
-            mysqli_free_result($result);
         }
 
-        return $persons;
+        return $summary;
     }
 
     // Возвращает все данные для указанного ID

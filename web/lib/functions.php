@@ -89,29 +89,31 @@ function includeWidget($widget, $data = [])
 }
 
 // Возвращает даты начала и конца текущей недели
-function getWeekPeriod()
+// Формат "Y-m-d" по умолчанию для SQL запросов
+function getWeekPeriod($format="Y-m-d")
 {
     $period = [
-        'first' => '',
-        'last' => ''
+        'begin' => '',
+        'end' => ''
     ];
 
     $time = time();
-    $date = date("Y-m-d", $time);
+    $date = date($format, $time);
     $current_week_day = date_format(date_create($date), "w");
     $days_to_week_end = 7 - $current_week_day;
     $days_to_week_start = 6 - $days_to_week_end;
     $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
     $last_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) + $days_to_week_end, date("Y", $time));
 
-    $period['first'] = date("Y-m-d", $first_week_day);
-    $period['last'] = date("Y-m-d", $last_week_day);
+    $period['begin'] = date($format, $first_week_day);
+    $period['end'] = date($format, $last_week_day);
 
     return $period;
 }
 
 // Возвращает все даты текущей недели
-function getWeekDates()
+// Формат "Y-m-d" по умолчанию для SQL запросов
+function getWeekDates($format="Y-m-d")
 {
     $dates = [
         '0' => ['day' => 'Понедельник', 'date' => ''],
@@ -124,21 +126,22 @@ function getWeekDates()
     ];
 
     $time = time();
-    $date = date("Y-m-d", $time);
+    $date = date($format, $time);
     $current_week_day = date_format(date_create($date), "w");
     $days_to_week_end = 7 - $current_week_day;
     $days_to_week_start = 6 - $days_to_week_end;
     $first_week_day = mktime(0, 0, 0, date("m", $time), date("d", $time) - $days_to_week_start, date("Y", $time));
 
     foreach ($dates as $dayNumber => $value) {
-        $dates[$dayNumber]['date'] = date("Y-m-d", strtotime("+$dayNumber days", $first_week_day));
+        $dates[$dayNumber]['date'] = date($format, strtotime("+$dayNumber days", $first_week_day));
     }
 
     return $dates;
 }
 
 // Возвращает первую и последнюю дату из указанного периода
-function getBoundaryDates($dates, $format="d.m.Y")
+// Формат "Y-m-d" по умолчанию для SQL запросов
+function getBoundaryDates($dates, $format="Y-m-d")
 {
     if (empty($dates)) {
         return ['begin' => '', 'end' => ''];
@@ -148,4 +151,20 @@ function getBoundaryDates($dates, $format="d.m.Y")
         'begin' => date($format, strtotime($dates[array_key_first($dates)]['date'])),
         'end' => date($format, strtotime($dates[array_key_last($dates)]['date']))
     ];
+}
+
+// Проверяет является ли незавершенное задание просроченным
+function taskIsFailed($date_planned, $is_finished)
+{
+    $result = false;
+
+    $date_today = date("Y-m-d");
+
+    if (!$is_finished && (strtotime($date_planned) < strtotime($date_today))) {
+
+        $result = true;
+
+    }
+
+    return $result;
 }
