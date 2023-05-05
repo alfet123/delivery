@@ -86,9 +86,10 @@ class DataBase {
     {
         $tasks = [];
 
-        $query  = "select task.id, task.date_planned as date, type.name as type, task.address, task.person, task.phone, task.is_finished ";
+        $query  = "select task.id, task.date_planned, type.name as type, task.address, task.person, task.phone, transport.name as transport, task.is_finished ";
         $query .= "from task ";
         $query .= "join type on task.type_id = type.id ";
+        $query .= "left join transport on task.transport_id = transport.id ";
         $query .= "where task.date_planned = '".$date."' ";
         $query .= "order by task.id";
 

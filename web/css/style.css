@@ -12,6 +12,10 @@ body, div, nav, p, ul, li, h1 {
     padding: 0;
 }
 
+ul {
+	list-style-type: none;
+}
+
 a {
 	color: white;
 	text-decoration: none;
@@ -145,6 +149,7 @@ a:hover {
 	text-align: center;
 	color: white;
 	background-color: #1b5d7d;
+	border-radius: 3px 3px 0 0;
 }
 
 .day_task {
@@ -155,12 +160,27 @@ a:hover {
 
 .day_task:last-child {
 	border-bottom: none;
+	border-radius: 0 0 3px 3px;
 }
 
 .task_none {
 	font-style: italic;
 	text-align: center;
 }
+
+.task_finished {
+	background-color: #ccffcc;
+}
+
+.task_failed {
+	background-color: #ffcccc;
+}
+
+/*
+.task_product {
+	background-color: #ccccff;
+}
+*/
 
 .delivery_summary {
 	padding: 20px 0 0 0;

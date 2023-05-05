@@ -168,3 +168,61 @@ function taskIsFailed($date_planned, $is_finished)
 
     return $result;
 }
+
+// Возвращает название класса в соответствии со статусом задания
+function getStatusClass($task)
+{
+    if ($task['is_finished'] == 1) {
+
+        return "  task_finished";
+
+    }
+
+    if (taskIsFailed($task['date_planned'], $task['is_finished'])) {
+
+        return "  task_failed";
+
+    }
+
+/*    if (empty($task['product'])) {
+
+        return "  task_product";
+
+    }*/
+
+    return "";
+}
+
+// Возвращает список товаров в заказе
+function getProducts($products)
+{
+    $productsString = "";
+
+    if (empty($products)) {
+
+        return "";
+
+    }
+
+    $productsString = "(";
+
+    $productsCount = 1;
+
+    foreach ($products as $key => $product) {
+
+        $productsString .= $product['code'];
+
+        if ($productsCount < count($products)) {
+
+            $productsString .= ", ";
+
+        }
+
+        $productsCount++;
+
+    }
+
+    $productsString .= ")";
+
+    return $productsString;
+}

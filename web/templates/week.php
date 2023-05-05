@@ -29,18 +29,21 @@
 
                 <?php else : ?>
 
+                    <ul>
+
                     <?php foreach ($value['tasks'] as $key => $task) : ?>
 
-                        <p class="day_task">
+                        <li class="day_task<?=getStatusClass($task);?>">
                             <?=$task['type'];?> по адресу <?=$task['address'];?>
-                            (
-                            <?php foreach ($task['product'] as $key => $product) : ?>
-                                <?=$product['code'];?>,
-                            <?php endforeach; ?>
-                            )
-                        </p>
+                            <?=getProducts($task['product']);?>
+                            <?php if (!empty($task['transport'])) : ?>
+                                через ТК <?=$task['transport'];?>
+                            <?php endif; ?>
+                        </li>
 
                     <?php endforeach; ?>
+
+                    </ul>
 
                 <?php endif; ?>
 
